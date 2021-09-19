@@ -1,0 +1,136 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <title>01_time attack test</title>
+
+    <style>
+        * {
+            font-family: "Stylish", sans-serif;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
+
+    </style>
+    <script>
+            $(document).ready(function () {
+                openClose();
+            });
+
+            function openClose() {
+                if ($("#next-box").css("display") == "block") {
+                    $("#next-box").hide();
+                    $("#btn-suggest-box").text("추천 시작");
+                } else {
+                    $("#btn-suggest-box").hide()
+                    $("#next-box").show();
+
+                }
+            }
+
+            function postArticle() {
+                let url = $('#post-url').val()
+                let comment = $('#post-comment').val()
+
+                $.ajax({
+                    type: "POST",
+                    url: "/memo",
+                    data: {url_give:url, comment_give:comment},
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.reload();
+                    }
+                })
+            }
+
+            function showArticles() {
+                $.ajax({
+                    type: "GET",
+                    url: "/memo",
+                    data: {},
+                    success: function (response) {
+                        let articles = response['all_articles']
+                        for (let i = 0; i < articles.length; i++) {
+                            let comment = articles[i]['comment']
+                            let desc = articles[i]['desc']
+                            let image = articles[i]['image']
+                            let title = articles[i]['title']
+                            let url = articles[i]['url']
+
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a target="_blank" href="${url}" class="card-title">${title}</a>
+                                                    <p class="card-text">${desc}</p>
+                                                    <p class="card-text comment">${comment}</p>
+                                                </div>
+                                            </div>`
+
+                            $('#cards-box').append(temp_html)
+
+                        }
+                    }
+                })
+            }
+
+        </script>
+
+</head>
+<body>
+
+
+    <div class="wrap">
+            <div class="jumbotron">
+                <h1 class="display-4">주식 종목 추천!!</h1>
+                <p class="lead">원하시는 종목을 추천합니다</p>
+                <hr class="my-4">
+                <div class="next-box" id="next-box">
+                    <button onclick="openClose()" id="btn-next-box" type="button" class="btn btn-primary">다음
+                    </button>
+                <pre>
+                <span id="select-box" style="font-size: 20px">
+                </span>
+                </pre>
+
+                </div>
+                <div class="suggest-box" id="suggest-box">
+                <p class="lead">
+                    <button onclick="openClose()" id="btn-suggest-box" type="button" class="btn btn-primary">추천 시작
+                    </button>
+                </p>
+                </div>
+            </div>
+
+
+            </div>
+        </div>
+</body>
+</html>
