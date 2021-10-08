@@ -22,10 +22,18 @@ def save_post():
     today = datetime.now()
     mytime = today.strftime('%Y년%m월%d일 %H:%M:%S')
 
+    count = db.articles.count()
+    # 게시글 삭제시 중복 가능 ->   존재하는  number +1 로 바꿔야함
+    if count == 0:
+        count = 1
+    elif count > 0:
+        count = count + 1
+
     doc = {
-        'title' : title_receive,
-        'content' : content_receive,
-        'reg_date' : mytime
+        'idx': count,
+        'title': title_receive,
+        'content': content_receive,
+        'reg_date': mytime
     }
 
     db.timeattack2.insert_one(doc)
@@ -41,7 +49,10 @@ def get_post():
 
 @app.route('/post', methods=['DELETE'])
 def delete_post():
-     return jsonify({'msg': '삭제완료!'})
+    idx_receive = request.form['idx']
+
+    db.timeattack2.delete_one({'idx': idx_receive})
+    return jsonify({'msg': '삭제완료!'})
 
 
 if __name__ == "__main__":
