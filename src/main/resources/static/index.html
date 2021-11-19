@@ -72,11 +72,11 @@
 
         function getContent() {
             // 1. 기존 메모 내용을 지웁니다.
-            $('#acticle').empty();
+            $('#article').empty();
             // 2. 메모 목록을 불러와서 HTML로 붙입니다.
             $.ajax({
                 type: 'GET',
-                url: '/api/memos',
+                url: '/api/memo',
                 success: function (response) {
                     for (let i = 0; i < response.length; i++) {
                         let message = response[i];
@@ -87,11 +87,12 @@
             })
         }
 
+
         function addHTML(content) {
             // 1. HTML 태그를 만듭니다.
-            let tempHtml = `<p class="acticle">${content}</p>`;
+            let tempHtml = `<p class="article">${content}</p>`;
             // 2. #cards-box 에 HTML을 붙인다.
-            $('#acticle_box').append(tempHtml);
+            $('#article_box').append(tempHtml);
         }
 
         function contentSave() {
@@ -105,7 +106,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/api/memos',
+                url: '/api/memo',
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
@@ -124,8 +125,10 @@
         <h1 class="display-4">Hello, weekly Test</h1>
         <p class="lead">이번주 문제는 매우 쉬워요!!</p>
         <hr class="my-4">
-        <p id="acticle_box">
+        <p id="article_box">
+            <p class="article">
 
+            </p>
         </p>
     </div>
     <div class="form-group">

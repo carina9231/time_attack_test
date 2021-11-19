@@ -16,13 +16,13 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
     private Long id;
 
     @Column(nullable = false)
-    private String contents;
+    private String content;
 
-    public Memo(String username, String contents) {
-        this.contents = contents;
+    public Memo(String content) {
+        this.content = content;
     }
 
     public Memo(MemoRequestDto requestDto) {
-        this.contents = requestDto.getContents();
+        this.content = requestDto.getContent();
     }
 }

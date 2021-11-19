@@ -17,16 +17,16 @@ public class MemoController {
 
     private final MemoRepository memoRepository;
 
-    @PostMapping("/api/memos")
+    @PostMapping("/api/memo")
     public Memo createMemo(@RequestBody MemoRequestDto requestDto) {
         Memo memo = new Memo(requestDto);
+        // 응답 보내기
         return memoRepository.save(memo);
     }
 
-    @GetMapping("/api/memos")
+    @GetMapping("/api/memo")
     public List<Memo> getMemos() {
         return memoRepository.findAllByOrderByModifiedAtDesc();
     }
-
 }
 
